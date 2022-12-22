@@ -10,24 +10,24 @@ const int kMiddleValue = 1000000000;
 
 class InfinityPageView extends StatefulWidget {
   final Axis scrollDirection;
-  final ScrollPhysics physics;
+  final ScrollPhysics? physics;
   final bool pageSnapping;
-  final ValueChanged<int> onPageChanged;
+  final ValueChanged<int>? onPageChanged;
   final bool reverse;
   final IndexedWidgetBuilder itemBuilder;
-  final InfinityPageController controller;
+  final InfinityPageController? controller;
   final int itemCount;
 
   InfinityPageView({
-    Key key,
+    Key? key,
     this.scrollDirection: Axis.horizontal,
     this.reverse: false,
     this.controller,
     this.physics,
     this.pageSnapping: true,
     this.onPageChanged,
-    @required this.itemBuilder,
-    @required this.itemCount,
+    required this.itemBuilder,
+    required this.itemCount,
   }) : assert(itemCount != null) ,assert(itemBuilder!=null);
 
   @override
@@ -37,9 +37,9 @@ class InfinityPageView extends StatefulWidget {
 }
 
 class InfinityPageController  {
-  PageController pageController;
+  PageController? pageController;
 
-  int itemCount;
+  int? itemCount;
   int realIndex;
 
   InfinityPageController({
@@ -59,17 +59,17 @@ class InfinityPageController  {
 
   int calcIndex(int realIndex) {
     if(itemCount == 0)return 0;
-    int index = (realIndex - kMiddleValue) % this.itemCount;
+    int index = (realIndex - kMiddleValue) % this.itemCount!;
     if (index < 0) {
-      index += this.itemCount;
+      index += this.itemCount!;
     }
     return index;
   }
 
   Future<Null> animateToPage(
       int page, {
-        @required Duration duration,
-        @required Curve curve,
+        required Duration duration,
+        required Curve curve,
       }) {
     assert(page != null);
     assert(curve != null);
@@ -84,36 +84,36 @@ class InfinityPageController  {
 
     int destPage = offset + realIndex;
 
-    return pageController.animateToPage(destPage,
-        duration: duration, curve: curve);
+    return pageController!.animateToPage(destPage,
+        duration: duration, curve: curve).then((value) => value as Null);
   }
 
   void jumpToPage(int value) {
     assert(value != null);
 
-    pageController.jumpToPage(value + kMiddleValue);
+    pageController!.jumpToPage(value + kMiddleValue);
   }
 
   void dispose() {
-    pageController.dispose();
+    pageController!.dispose();
   }
 }
 
 class _InfinityPageViewState extends State<InfinityPageView> {
 
 
-  InfinityPageController controller;
+  InfinityPageController? controller;
 
 
 
   void _onPageChange(int realIndex) {
-    widget.controller.realIndex = realIndex;
+    widget.controller!.realIndex = realIndex;
     if(widget.onPageChanged!=null)
-      widget.onPageChanged(widget.controller.page);
+      widget.onPageChanged!(widget.controller!.page);
   }
 
   Widget _itemBuild(BuildContext context, int index) {
-    int _index = controller.calcIndex(index);
+    int _index = controller!.calcIndex(index);
     return widget.itemBuilder(context, _index);
   }
 
@@ -123,7 +123,7 @@ class _InfinityPageViewState extends State<InfinityPageView> {
       key: widget.key,
       scrollDirection: widget.scrollDirection,
       reverse: widget.reverse,
-      controller: controller.pageController,
+      controller: controller!.pageController,
       physics: widget.physics,
       pageSnapping: widget.pageSnapping,
       onPageChanged: _onPageChange,
@@ -140,7 +140,7 @@ class _InfinityPageViewState extends State<InfinityPageView> {
     }else{
       controller = widget.controller;
     }
-    controller.itemCount = widget.itemCount;
+    controller!.itemCount = widget.itemCount;
     super.initState();
   }
 
@@ -152,14 +152,14 @@ class _InfinityPageViewState extends State<InfinityPageView> {
         controller = widget.controller;
       }
     }
-    controller.itemCount = widget.itemCount;
+    controller!.itemCount = widget.itemCount;
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void dispose() {
     if(controller!=null && controller!=widget.controller){
-      controller.dispose();
+      controller!.dispose();
     }
     super.dispose();
   }

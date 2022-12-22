@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             new Row(
               children: <Widget>[
-                new FlatButton(
+                TextButton(
                     onPressed: () {
                       print("the page is ${infinityPageController.page}");
 
@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           curve: Curves.ease);
                     },
                     child: new Text("left")),
-                new FlatButton(
+                TextButton(
                     onPressed: () {
                       print("the page is ${infinityPageController.page}");
 
@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           curve: Curves.ease);
                     },
                     child: new Text("right")),
-                new FlatButton(
+                TextButton(
                     onPressed: () {
                       print("the page is ${infinityPageController.page}");
 
@@ -111,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           .jumpToPage(infinityPageController.page - 1);
                     },
                     child: new Text("left")),
-                new FlatButton(
+                TextButton(
                     onPressed: () {
                       print("the page is ${infinityPageController.page}");
 
